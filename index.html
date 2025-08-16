@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Selamat Ulang Tahun Dea</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: radial-gradient(circle at top, #3a006b, #0a0016);
+      color: #fff;
+      text-align: center;
+      overflow: hidden;
+    }
+    .card {
+      max-width: 800px;
+      padding: 40px 25px;
+      border-radius: 25px;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 15px 50px rgba(0,0,0,0.6);
+      animation: fadeIn 1.2s ease;
+    }
+    @keyframes fadeIn {
+      from {opacity:0; transform:translateY(50px);}
+      to {opacity:1; transform:translateY(0);}
+    }
+    .text {
+      font-size: 20px;
+      line-height: 1.6;
+      opacity: 0;
+      transition: opacity 1s;
+      white-space: pre-line;
+      min-height: 180px;
+    }
+    .text.show {
+      opacity: 1;
+    }
+    .btn {
+      margin-top: 20px;
+      padding: 12px 30px;
+      font-size: 16px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      color: #fff;
+      background: linear-gradient(90deg,#ff80c0,#d060ff);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.35);
+      transition: transform 0.2s;
+    }
+    .btn:active {
+      transform: scale(0.95);
+    }
+    /* Bintang */
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 3s infinite alternate;
+    }
+    @keyframes twinkle {
+      from {opacity: 0.2;}
+      to {opacity: 1;}
+    }
+    /* Kupu-kupu */
+    .butterfly {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: url('https://cdn-icons-png.flaticon.com/512/616/616408.png') no-repeat center/contain;
+      animation: fly 20s linear infinite;
+      opacity: 0.8;
+    }
+    @keyframes fly {
+      0% { transform: translate(-10vw, 100vh) rotate(0deg);}
+      50% { transform: translate(50vw, 50vh) rotate(180deg);}
+      100% { transform: translate(110vw, -20vh) rotate(360deg);}
+    }
+  </style>
+</head>
+<body>
+  <!-- Dekorasi bintang -->
+  <div class="star" style="top:10%; left:20%; animation-delay:0s;"></div>
+  <div class="star" style="top:30%; left:70%; animation-delay:1s;"></div>
+  <div class="star" style="top:60%; left:40%; animation-delay:2s;"></div>
+  <div class="star" style="top:80%; left:80%; animation-delay:1.5s;"></div>
+
+  <!-- Kupu-kupu -->
+  <div class="butterfly" style="animation-delay:0s;"></div>
+  <div class="butterfly" style="animation-delay:5s;"></div>
+  <div class="butterfly" style="animation-delay:10s;"></div>
+
+  <!-- Card isi ucapan -->
+  <div class="card">
+    <div id="textBox" class="text"></div>
+    <button id="nextBtn" class="btn">Next 💕</button>
+  </div>
+
+  <!-- Musik -->
+  <audio id="bgm" src="mentahan.mp3" loop></audio>
+
+  <script>
+    const texts = [
+      "Selamat Ulang Tahun, Sayangku Dea ✨💕",
+      "Hari ini usiamu bertambah,\n tapi cintaku padamu tak pernah berkurang.",
+      "Selamat ulang tahun ke-32, cintaku tercinta! 🎂💕",
+      "Semoga setiap hari yang kau lalui dipenuhi\n senyum, kehangatan, dan kebahagiaan. 🌸",
+      "Aku berdoa agar mimpi-mimpimu terwujud,\n langkahmu ringan, dan hatimu selalu tenang. 🌟",
+      "Terima kasih telah menjadi bintang dalam hidupku.\n Aku mencintaimu tanpa batas waktu. 💕",
+      "Di antara ribuan bintang,\n hanya kau yang paling bercahaya.",
+      "Di antara jutaan jiwa,\n hanya kau yang kupilih selamanya.",
+      "Aku ingin terus bersamamu,\n melewati senja, malam, dan pagi yang baru.",
+      "Kau adalah alasan aku tersenyum setiap hari,\n alasan aku kuat saat dunia terasa berat. 💖",
+      "Semoga ulang tahun ini membawa berkah,\n cinta yang semakin tumbuh, dan kebahagiaan tanpa henti. 🎁",
+      "Aku berjanji akan selalu ada,\n menemanimu di kala suka maupun duka.",
+      "Selamat ulang tahun, cintaku.\n Aku akan selalu mencintaimu,\n hari ini, esok, dan selamanya. 💕"
+    ];
+
+    let index = 0;
+    const textBox = document.getElementById("textBox");
+    const nextBtn = document.getElementById("nextBtn");
+    const bgm = document.getElementById("bgm");
+
+    // coba autoplay musik
+    window.addEventListener("load", () => {
+      bgm.play().catch(() => console.log("Autoplay dicegah, tunggu klik user"));
+    });
+    // fallback: play saat user klik
+    document.addEventListener("click", () => {
+      if (bgm.paused) bgm.play();
+    });
+
+    function showText() {
+      textBox.classList.remove("show");
+      setTimeout(() => {
+        textBox.innerText = texts[index];
+        textBox.classList.add("show");
+      }, 200);
+    }
+
+    nextBtn.addEventListener("click", () => {
+      if (index < texts.length - 1) {
+        index++;
+        showText();
+      } else {
+        nextBtn.innerText = "💖 Selesai 💖";
+        nextBtn.disabled = true;
+      }
+    });
+
+    // tampilkan text pertama
+    showText();
+  </script>
+</body>
+</html>
